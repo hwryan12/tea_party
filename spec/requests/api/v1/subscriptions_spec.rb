@@ -36,4 +36,18 @@ RSpec.describe 'Subscriptions API', type: :request do
       end
     end
   end
+
+  describe 'PUT /api/v1/subscriptions/:id' do
+    let(:subscription) { create(:subscription, customer: customer, status: 'active') }
+
+    context 'when the subscription exists' do
+      before { put "/api/v1/subscriptions/#{subscription.id}", params: { subscription: { status: 'cancelled' } } }
+
+      it 'cancels the subscription' do
+        json = JSON.parse(response.body, symbolize_names: true)
+        expect(response).to have_http_status(:ok)
+        expect(json[:data][:attributes][:status]).to eq('cancelled')
+      end
+    end
+  end
 end

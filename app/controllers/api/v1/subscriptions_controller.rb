@@ -11,6 +11,11 @@ class Api::V1::SubscriptionsController < ApplicationController
     render json: SubscriptionSerializer.new(subscription).serializable_hash.to_json, status: :created
   end
   
+  def update
+    subscription = Subscription.find(params[:id])
+    subscription.update(subscription_params)
+    render json: SubscriptionSerializer.new(subscription).serializable_hash.to_json, status: :ok
+  end
 
   private
   def subscription_params
