@@ -2,18 +2,11 @@ class Api::V1::SubscriptionsController < ApplicationController
   def index
     customer = Customer.find(params[:customer_id])
     subscriptions = customer.subscriptions
-    render json: SubscriptionSerializer.new(subscriptions)
+    render json: SubscriptionSerializer.new(subscriptions), status: :ok
   end
   
   def create
     subscription = Subscription.create!(subscription_params)
-  
-    if subscription_params[:tea_ids]
-      subscription_params[:tea_ids].each do |tea_id|
-        SubscriptionTea.create!(subscription: subscription, tea_id: tea_id)
-      end
-    end
-  
     render json: SubscriptionSerializer.new(subscription), status: :created
   end
   
