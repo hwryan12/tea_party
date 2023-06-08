@@ -42,6 +42,31 @@ RSpec.describe 'Customers Subscriptions API', type: :request do
         expect(json[:data][:attributes][:tea_ids]).to eq([tea1.id])
       end
     end
+
+    context 'when the request is missing a necessary attribute' do
+      before do
+        invalid_attributes = valid_attributes.deep_dup
+        invalid_attributes[:subscription].delete(:title)
+        post "/api/v1/customers/#{customer1.id}/subscriptions", params: invalid_attributes
+      end      
+    
+      it 'returns a validation failure message' do
+        expect(response).to have_http_status(:unprocessable_entity)
+        json = JSON.parse(response.body, symbolize_names: true)
+        expect(json[:errors]).to include("Title can't be blank")
+      end
+    end
+
+    context 'when the customer does not exist' do
+      let(:non_existent_id) { 10000 } 
+      before { post "/api/v1/customers/#{non_existent_id}/subscriptions", params: valid_attributes }
+    
+      it 'returns a not found message' do
+        expect(response).to have_http_status(:not_found)
+        json = JSON.parse(response.body, symbolize_names: true)
+        expect(json[:error]).to eq('Customer not found')
+      end
+    end
   end
 
   describe 'PUT /api/v1/customers/:id/subscriptions/:id' do
