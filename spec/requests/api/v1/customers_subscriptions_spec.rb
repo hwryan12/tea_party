@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Customers Subscriptions API', type: :request do
   let!(:customer1) { create(:customer) }
   let!(:customer2) { create(:customer) }
+  let!(:customer3) { create(:customer) }
 
   let!(:tea1) { create(:tea) }
   let!(:tea2) { create(:tea) }  
@@ -124,6 +125,26 @@ RSpec.describe 'Customers Subscriptions API', type: :request do
         expect(json[:data].last[:attributes][:frequency]).to eq(subscription2.frequency)
         expect(json[:data].last[:attributes][:customer_id]).to eq(subscription2.customer_id)
         expect(json[:data].last[:attributes][:tea_ids]).to eq([tea1.id])
+      end
+    end
+
+    context 'when the customer does not exist' do
+      before { get "/api/v1/customers/999/subscriptions" }
+  
+      it 'returns a not found error' do
+        expect(response).to have_http_status(:not_found)
+        json = JSON.parse(response.body, symbolize_names: true)
+        expect(json[:error]).to eq('Customer not found')
+      end
+    end
+
+    context 'when the customer has no subscriptions' do
+      before { get "/api/v1/customers/#{customer3.id}/subscriptions" }
+  
+      it 'returns an empty array' do
+        json = JSON.parse(response.body, symbolize_names: true)
+        expect(response).to have_http_status(:ok)
+        expect(json[:data]).to be_empty
       end
     end
   end
