@@ -11,6 +11,53 @@ RSpec.describe 'Customers Subscriptions API', type: :request do
   let!(:subscription2) { create(:subscription, customer: customer1, teas: [tea1]) }
   let!(:subscription3) { create(:subscription, customer: customer2, teas: [tea2]) }
 
+  describe 'POST /api/v1/customers/:id/subscriptions' do
+    let (:valid_attributes) do
+      {
+        subscription: {
+          title: "Monthly Tea Subscription",
+          price: 15.99,
+          status: "active",
+          frequency: "monthly",
+          customer_id: customer1.id,
+          tea_ids: [tea1.id]
+        }
+      }
+    end
+
+    context 'when the request is valid' do
+      before { post "/api/v1/customers/#{customer1.id}/subscriptions", params: valid_attributes }
+
+      it 'creates a subscription' do
+        json = JSON.parse(response.body, symbolize_names: true)
+        
+        expect(response).to have_http_status(:created)
+        expect(json[:data]).to be_a(Hash)
+        expect(json[:data]).to have_key(:id)
+        expect(json[:data][:attributes][:title]).to eq('Monthly Tea Subscription')
+        expect(json[:data][:attributes][:price]).to eq('15.99')
+        expect(json[:data][:attributes][:status]).to eq('active')
+        expect(json[:data][:attributes][:frequency]).to eq('monthly')
+        expect(json[:data][:attributes][:customer_id]).to eq(customer1.id)
+        expect(json[:data][:attributes][:tea_ids]).to eq([tea1.id])
+      end
+    end
+  end
+
+  describe 'PUT /api/v1/customers/:id/subscriptions/:id' do
+    let(:subscription) { create(:subscription, customer: customer, status: 'active') }
+
+    context 'when the subscription exists' do
+      before { put "/api/v1/customers/#{customer1.id}/subscriptions/#{subscription1.id}", params: { subscription: { status: 'cancelled' } } }
+
+      it 'cancels the subscription' do
+        json = JSON.parse(response.body, symbolize_names: true)
+        expect(response).to have_http_status(:ok)
+        expect(json[:data][:attributes][:status]).to eq('cancelled')
+      end
+    end
+  end
+
   describe 'GET /api/v1/customers/:id/subscriptions' do
     context 'when the customer exists' do
       before { get "/api/v1/customers/#{customer1.id}/subscriptions" }
