@@ -93,7 +93,7 @@ RSpec.configure do |config|
 =end
 end
 
-require 'simplecov'
-SimpleCov.start do
-  add_filter 'spec/rails_helper.rb'
-end
+# require 'simplecov'
+# SimpleCov.start do
+#   add_filter 'spec/rails_helper.rb'
+# end
