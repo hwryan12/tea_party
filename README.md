@@ -9,6 +9,7 @@ This repository hosts a Tea Subscription Service, a backend Rails API project th
 - [About](#about)
 - [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
+- [Database Design](#database-design)
 - [RESTful Endpoints](#restful-endpoints)
 ---
 
@@ -21,14 +22,43 @@ The Tea Subscription Service is designed to provide a seamless and hassle-free e
 - **RSpec:** The testing framework used for developing the application using Test-Driven Development (TDD) principles.
 - **jsonapi-serializer:** Used for serializing the API data to JSON:API format, providing a clear and organized structure of the data.
 - **Postman:** Used for manual testing of the API endpoints.
----
+
 ## Getting Started
 1. **Clone the Repository:** Get started by cloning the repository to your local machine.
-2. **Install Dependencies:** Navigate into the cloned repository and install necessary dependencies.
-3. **Start the Server:** Fire up the localhost server.
-Note: Please ensure you have Ruby and Rails installed on your machine before running these commands.
-
+3. **Install Dependencies:** Navigate into the cloned repository and install necessary dependencies.
+    
+    ```Bundle Install```
+5. **Start the Server:** Fire up the localhost server.
+    
+    ```Rails Server```
+    
+    Note: Please ensure you have Ruby and Rails installed on your machine before running these commands.
 ---
+## Database Design
+<details>
+<summary> Schema </summary>
+<br>
+
+![Screenshot 2023-06-08 at 7 01 41 AM](https://github.com/hwryan12/tea_party/assets/116698937/da90c416-c003-4d29-83bd-58a498447a4d)
+
+</details>
+
+
+The design of this application's database is structured around four primary tables: `customers`, `subscriptions`, `teas`, and the `subscription_teas` join table. 
+
+1. **Customers**: The `customers` table stores information related to our users, including first and last name, email, and address.
+
+2. **Subscriptions**: The `subscriptions` table represents the different subscriptions available. It contains details like title, price, status (active or cancelled), and frequency. It also includes a `customer_id` foreign key to denote the customer to whom each subscription belongs.
+
+3. **Teas**: The `teas` table holds information about the different types of tea available, such as title, description, brewing temperature, and brew time.
+
+4. **Subscription_Teas**: The `subscription_teas` table is a join table that connects `subscriptions` and `teas` in a many-to-many relationship. Each row in this table represents a specific tea included in a particular subscription.
+
+In the current design, there is a one-to-many relationship from `customers` to `subscriptions`, meaning one customer can have multiple subscriptions, but each subscription is associated with only one customer. This was a conscious design decision based on the requirements of the project. 
+
+However, it's worth noting that depending on business needs, this design could be revised to a many-to-many relationship between `customers` and `subscriptions`. This would allow a customer to have the same subscription multiple times. For example, a customer might want to subscribe to the same tea subscription for themselves and as a gift for someone else. With the current design, this scenario isn't possible without creating a separate customer entry for the gift recipient. A many-to-many relationship could be established with an additional join table, or by introducing additional fields in the `subscriptions` table to handle multiple instances of the same subscription for a single customer. Such decisions would be based on a thorough understanding of the business model and user requirements.
+
+
 ## RESTful Endpoints
 
 Base url to reach the endpoints listed below:
