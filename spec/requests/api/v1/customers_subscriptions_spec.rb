@@ -81,6 +81,24 @@ RSpec.describe 'Customers Subscriptions API', type: :request do
         expect(json[:data][:attributes][:status]).to eq('cancelled')
       end
     end
+
+    context 'when the subscription does not exist' do
+      before { put "/api/v1/customers/#{customer1.id}/subscriptions/999", params: { subscription: { status: 'cancelled' } } }
+
+      it 'returns not found' do
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+
+    context 'when the request is missing necessary attributes' do
+      before { put "/api/v1/customers/#{customer1.id}/subscriptions/#{subscription1.id}", params: { subscription: { status: nil } } }
+
+      it 'returns a validation failure message' do
+        expect(response).to have_http_status(:unprocessable_entity)
+        json = JSON.parse(response.body, symbolize_names: true)
+        expect(json[:errors]).to include("Status can't be blank")
+      end
+    end
   end
 
   describe 'GET /api/v1/customers/:id/subscriptions' do
