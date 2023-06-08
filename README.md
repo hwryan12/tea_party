@@ -1,4 +1,5 @@
-# Tea Party APIs
+# Tea Subscription Service
+![istockphoto-696205894-612x612](https://github.com/hwryan12/tea_party/assets/116698937/86eab267-68ab-4f51-b7d3-39292556464e)
 ## Introduction
 This repository hosts a Tea Subscription Service, a backend Rails API project that was given as a take-home challenge. It provides a platform to manage customers, their tea subscriptions, and features various endpoints for interaction.
 
