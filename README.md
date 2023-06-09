@@ -72,7 +72,7 @@ http://localhost:3000/api/v1
 ### Create a new subscription
 
 ```http
-POST customers/:id/subscriptions
+POST /customers/:id/subscriptions
 ```
 
 <details close>
@@ -143,7 +143,7 @@ Response:
 ### Cancel a subscription
 
 ```http
-PUT customers/:id/subscriptions/:id
+PUT /customers/:id/subscriptions/:id
 ```
 
 <details close>
