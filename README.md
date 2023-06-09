@@ -18,7 +18,7 @@ This repository hosts a Tea Subscription Service, a backend Rails API project th
 The Tea Subscription Service is designed to provide a seamless and hassle-free experience to tea enthusiasts who wish to subscribe to their favourite tea offerings. Users can easily subscribe or cancel their subscriptions, and view all their active and cancelled subscriptions at any point. To maintain a scalable and easily consumable API, the service is built with RESTful conventions and Object-Oriented Programming principles.
 
 ## Tech Stack
-- **Ruby on Rails:** The framework used for implementing the server-side logic and RESTful API endpoints.
+- **Ruby on Rails 7:** The framework used for implementing the server-side logic and RESTful API endpoints.
 - **PostgreSQL:** The database system used for data persistence.
 - **RSpec:** The testing framework used for developing the application using Test-Driven Development (TDD) principles.
 - **jsonapi-serializer:** Used for serializing the API data to JSON:API format, providing a clear and organized structure of the data.
@@ -26,9 +26,16 @@ The Tea Subscription Service is designed to provide a seamless and hassle-free e
 
 ## Getting Started
 1. **Clone the Repository:** Get started by cloning the repository to your local machine.
-3. **Install Dependencies:** Navigate into the cloned repository and install necessary dependencies.
+3. **Install Dependencies:** Navigate into the cloned repository and install necessary dependencies:
     
     ```bundle install```
+    
+    Then create and migrate the database:
+    ```rails db:{create, migrate, seed}```
+    
+    If you would like run the `RSpec` test suite, run this command:
+    ```bundle exec rails rspec``` 
+    
 5. **Start the Server:** Fire up the localhost server.
     
     ```rails server```
