@@ -28,10 +28,10 @@ The Tea Subscription Service is designed to provide a seamless and hassle-free e
 1. **Clone the Repository:** Get started by cloning the repository to your local machine.
 3. **Install Dependencies:** Navigate into the cloned repository and install necessary dependencies.
     
-    ```Bundle Install```
+    ```bundle install```
 5. **Start the Server:** Fire up the localhost server.
     
-    ```Rails Server```
+    ```rails server```
     
     Note: Please ensure you have Ruby and Rails installed on your machine before running these commands.
 ---
