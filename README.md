@@ -87,7 +87,6 @@ Request: <br>
         "price": 15.99,
         "status": "active",
         "frequency": "monthly",
-        "customer_id": 1,
         "tea_ids": [1]
     }
 }
