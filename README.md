@@ -57,8 +57,7 @@ The design of this application's database is structured around four primary tabl
 
 In the current design, there is a one-to-many relationship from `customers` to `subscriptions`, meaning one customer can have multiple subscriptions, but each subscription is associated with only one customer. This was a conscious design decision based on the requirements of the project. 
 
-However, it's worth noting that depending on business needs, this design could be revised to a many-to-many relationship between `customers` and `subscriptions`. This would allow a customer to have the same subscription multiple times. For example, a customer might want to subscribe to the same tea subscription for themselves and as a gift for someone else. With the current design, this scenario isn't possible without creating a separate customer entry for the gift recipient. A many-to-many relationship could be established with an additional join table, or by introducing additional fields in the `subscriptions` table to handle multiple instances of the same subscription for a single customer. Such decisions would be based on a thorough understanding of the business model and user requirements.
-
+However, it's worth noting that depending on business needs, this design could be revised to a many-to-many relationship between `customers` and `subscriptions`. This adjustment could allow a `subscription` to be shared among multiple `customers`. For instance, a family or a group of friends might want to subscribe to the same tea subscription service, each with their own customer account, to track their individual preferences and consumption, but not to pay multiple times for essentially the same subscription being sent to the same address. With the current design, this scenario isn't possible without creating a duplicate `subscription` for each `customer`. A many-to-many relationship could be established with an additional join table, such as `customer_subscriptions`, which would contain `customer_id` and `subscription_id` to handle shared `subscriptions`. These decisions would be based on a thorough understanding of the business model and user requirements, and would need careful handling of the business logic, such as payments, to ensure that shared subscriptions are billed correctly and only once.
 
 ## RESTful Endpoints
 
@@ -73,7 +72,7 @@ http://localhost:3000/api/v1
 ### Create a new subscription
 
 ```http
-POST /subscriptions
+POST customers/:id/subscriptions
 ```
 
 <details close>
@@ -144,7 +143,7 @@ Response:
 ### Cancel a subscription
 
 ```http
-PUT /subscriptions/:id
+PUT customers/:id/subscriptions/:id
 ```
 
 <details close>
